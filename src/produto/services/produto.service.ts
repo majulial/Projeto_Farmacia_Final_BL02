@@ -86,9 +86,9 @@ export class ProdutoService {
             order: {
                 preco: 'ASC'
             },
-            // relations: {
-            //     categoria: true
-            // }
+            relations: {
+                categoria: true
+            }
         })
     }
 
@@ -100,9 +100,9 @@ export class ProdutoService {
             order: {
                 preco: 'DESC'
             },
-            // relations: {
-            //     categoria: true
-            // }
+            relations: {
+                categoria: true
+            }
         })
     }
 

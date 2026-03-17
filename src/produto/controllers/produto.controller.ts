@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Post, Put, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Post, Put, Query, UseGuards } from "@nestjs/common";
 
 import { Produtos } from "../entities/produto.entity";
 import { ProdutoService } from "../services/produto.service";
+import { JwtAuthGuard } from "../../auth/guard/jwt-auth.guard";
 
 
 
@@ -35,18 +36,35 @@ export class ProdutoController{
     
     }
 
+    @Get('/preco-maior/:preco')
+    @HttpCode(HttpStatus.OK)
+    findByPrecoMaior(@Param('preco', ParseIntPipe) preco: number): Promise<Produtos[]> {
+        return this.produtoService.findByPrecoMaior(preco);
+    }
+
+    @Get('/preco-menor/:preco')
+@HttpCode(HttpStatus.OK)
+findByPrecoMenor(@Param('preco', ParseIntPipe) preco: number): Promise<Produtos[]> {
+    return this.produtoService.findByPrecoMenor(preco);
+}
+
+
+
+
     @Post()
     @HttpCode(HttpStatus.CREATED)
     create(@Body() produto: Produtos): Promise<Produtos>{
         return this.produtoService.create(produto);
     }
 
+    @UseGuards(JwtAuthGuard)
        @Put()
     @HttpCode(HttpStatus.OK)
     update(@Body() produto: Produtos): Promise<Produtos>{
         return this.produtoService.update(produto);
     }
 
+    @UseGuards(JwtAuthGuard)
     @Delete('/:id')
     @HttpCode(HttpStatus.NO_CONTENT)
     delete(@Param('id', ParseIntPipe) id: number) {
